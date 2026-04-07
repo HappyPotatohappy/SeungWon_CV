@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seungwon Chung — ML Researcher</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0c0e;
+    --surface: #141418;
+    --surface2: #1c1c22;
+    --border: #2a2a34;
+    --text: #e8e6e3;
+    --text-dim: #8a8a96;
+    --accent: #c4a46c;
+    --accent-soft: rgba(196,164,108,0.12);
+    --accent-glow: rgba(196,164,108,0.06);
+    --tag-bg: #1e1e26;
+    --tag-text: #a0a0ae;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .grain {
+    position: fixed; inset:0; z-index:9999; pointer-events:none; opacity:0.03;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .page {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 80px 32px 120px;
+  }
+
+  /* HEADER */
+  .header {
+    margin-bottom: 64px;
+    position: relative;
+  }
+
+  .header::after {
+    content: '';
+    position: absolute;
+    bottom: -32px;
+    left: 0;
+    width: 48px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  .header h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 3rem;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    margin-bottom: 10px;
+    animation: fadeUp 0.8s ease both;
+  }
+
+  .header .subtitle {
+    font-size: 1.05rem;
+    color: var(--text-dim);
+    font-weight: 300;
+    margin-bottom: 20px;
+    animation: fadeUp 0.8s 0.1s ease both;
+  }
+
+  .contact-row {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    animation: fadeUp 0.8s 0.2s ease both;
+  }
+
+  .contact-row a {
+    color: var(--accent);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.02em;
+    transition: opacity 0.2s;
+  }
+
+  .contact-row a:hover { opacity: 0.7; }
+
+  /* SUMMARY */
+  .summary {
+    font-size: 1.02rem;
+    color: var(--text-dim);
+    line-height: 1.85;
+    margin-bottom: 64px;
+    border-left: 2px solid var(--accent-soft);
+    padding-left: 20px;
+    animation: fadeUp 0.8s 0.3s ease both;
+  }
+
+  /* SECTIONS */
+  .section {
+    margin-bottom: 56px;
+    animation: fadeUp 0.8s 0.35s ease both;
+  }
+
+  .section-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ENTRY */
+  .entry {
+    margin-bottom: 36px;
+    padding: 20px 24px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+
+  .entry:hover {
+    border-color: rgba(196,164,108,0.25);
+    box-shadow: 0 0 24px var(--accent-glow);
+  }
+
+  .entry-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 4px;
+  }
+
+  .entry-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: var(--text);
+  }
+
+  .entry-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.76rem;
+    color: var(--text-dim);
+    white-space: nowrap;
+  }
+
+  .entry-sub {
+    font-size: 0.88rem;
+    color: var(--text-dim);
+    margin-bottom: 12px;
+  }
+
+  .entry ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .entry li {
+    position: relative;
+    padding-left: 16px;
+    font-size: 0.92rem;
+    color: var(--text-dim);
+    margin-bottom: 6px;
+    line-height: 1.7;
+  }
+
+  .entry li::before {
+    content: '›';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* TAGS */
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    padding: 3px 10px;
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    border-radius: 4px;
+    letter-spacing: 0.02em;
+  }
+
+  /* PUBLICATIONS */
+  .pub {
+    padding: 14px 20px;
+    margin-bottom: 10px;
+    border-left: 2px solid var(--border);
+    transition: border-color 0.3s;
+  }
+
+  .pub:hover { border-color: var(--accent); }
+
+  .pub-title {
+    font-size: 0.94rem;
+    color: var(--text);
+    font-weight: 400;
+  }
+
+  .pub-year {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.74rem;
+    color: var(--text-dim);
+  }
+
+  /* SKILLS GRID */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 12px 24px;
+    align-items: start;
+  }
+
+  .skill-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.74rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    padding-top: 3px;
+  }
+
+  .skill-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  /* EDUCATION */
+  .edu {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .edu-info { flex: 1; }
+
+  .edu-school {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.08rem;
+  }
+
+  .edu-detail {
+    font-size: 0.88rem;
+    color: var(--text-dim);
+  }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding-top: 48px;
+    border-top: 1px solid var(--border);
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  @keyframes fadeUp {
+    from { opacity:0; transform: translateY(16px); }
+    to { opacity:1; transform: translateY(0); }
+  }
+
+  @media (max-width: 600px) {
+    .page { padding: 48px 20px 80px; }
+    .header h1 { font-size: 2.2rem; }
+    .skills-grid { grid-template-columns: 1fr; gap: 8px; }
+    .skill-label { margin-top: 8px; }
+  }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1>Seungwon Chung</h1>
+    <p class="subtitle">ML Researcher · Statistics · Domain Generalization</p>
+    <div class="contact-row">
+      <a href="tel:010-2730-7093">010-2730-7093</a>
+      <a href="mailto:seanlisa15@gmail.com">seanlisa15@gmail.com</a>
+    </div>
+  </div>
+
+  <!-- SUMMARY -->
+  <p class="summary">
+    ML researcher with a statistics background, focused on learning under distribution shift — domain generalization, domain adaptation, and OOD detection. Experienced in building training pipelines, running controlled experiments, and working with real-world data across recommendation systems, manufacturing, sports analytics, and NLP domains.
+  </p>
+
+  <!-- EXPERIENCE -->
+  <div class="section">
+    <div class="section-title">Experience</div>
+
+    <div class="entry">
+      <div class="entry-header">
+        <span class="entry-title">Korea University Graduate School</span>
+        <span class="entry-date">2021 – 2026</span>
+      </div>
+      <div class="entry-sub">M.S. Researcher, Statistics · Seoul</div>
+      <ul>
+        <li>Researched domain generalization and OOD detection, focusing on training models robust to distribution shift.</li>
+        <li>Proposed DANGR — adversarial noise injection to push feature extractors toward domain-invariant representations. Full ablations on DomainBed benchmarks.</li>
+        <li>Built all experiments in PyTorch on DomainBed; multi-GPU training, hyperparameter sweeps, automated evaluation.</li>
+      </ul>
+      <div class="tags">
+        <span class="tag">PyTorch</span>
+        <span class="tag">DomainBed</span>
+        <span class="tag">Multi-GPU</span>
+        <span class="tag">Domain Generalization</span>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-header">
+        <span class="entry-title">ROKA HQ Test & Evaluation Group</span>
+        <span class="entry-date">2022 – 2023</span>
+      </div>
+      <div class="entry-sub">Data Analysis Specialist</div>
+      <ul>
+        <li>Analyzed weapon system test data; wrote statistical reports for acquisition and fielding decisions.</li>
+        <li>First-authored two internal publications on test repetition reliability and diffusion-based augmentation for small-sample settings.</li>
+      </ul>
+      <div class="tags">
+        <span class="tag">Statistical Analysis</span>
+        <span class="tag">Diffusion Models</span>
+        <span class="tag">Technical Writing</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECTS -->
+  <div class="section">
+    <div class="section-title">Projects</div>
+
+    <div class="entry">
+      <div class="entry-header">
+        <span class="entry-title">Fashion Recommendation System</span>
+        <span class="entry-date">2026</span>
+      </div>
+      <div class="entry-sub">Personal Project</div>
+      <ul>
+        <li>Two-stage pipeline — 11-source candidate generation followed by LambdaMART reranking with 58 features.</li>
+        <li>Diagnosed candidate recall as bottleneck; ALS lifted recall +2.2%p and NDCG@12 +1.2%.</li>
+      </ul>
+      <div class="tags">
+        <span class="tag">LambdaMART</span>
+        <span class="tag">ALS</span>
+        <span class="tag">RecSys</span>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-header">
+        <span class="entry-title">LLM Fine-Tuning Pipeline</span>
+        <span class="entry-date">2026</span>
+      </div>
+      <div class="entry-sub">Team Lead</div>
+      <ul>
+        <li>Consolidated scattered scripts into a single CLI pipeline — Full / LoRA / QLoRA fine-tuning.</li>
+        <li>Config validation, deterministic splits, prompt formatting, per-run summaries for reproducibility.</li>
+      </ul>
+      <div class="tags">
+        <span class="tag">LLM</span>
+        <span class="tag">LoRA</span>
+        <span class="tag">QLoRA</span>
+        <span class="tag">CLI</span>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-header">
+        <span class="entry-title">K-League Pass Destination Prediction</span>
+        <span class="entry-date">2025</span>
+      </div>
+      <div class="entry-sub">Personal Project · Top 11%</div>
+      <ul>
+        <li>Spatial coordinate regression with Transformer + MDN — capturing continuous on-pitch positioning.</li>
+        <li>Distance-based evaluation metrics; individual-play error analysis.</li>
+      </ul>
+      <div class="tags">
+        <span class="tag">Transformer</span>
+        <span class="tag">MDN</span>
+        <span class="tag">Sports Analytics</span>
+      </div>
+    </div>
+
+    <div class="entry">
+      <div class="entry-header">
+        <span class="entry-title">LG Aimers 5: Product Defect Classification</span>
+        <span class="entry-date">2024</span>
+      </div>
+      <div class="entry-sub">Team Lead · Top 8%</div>
+      <ul>
+        <li>Noisy manufacturing data with heavy missing values and class imbalance.</li>
+        <li>Compared imputation strategies; CatBoost-based pipeline.</li>
+      </ul>
+      <div class="tags">
+        <span class="tag">CatBoost</span>
+        <span class="tag">Tabular ML</span>
+        <span class="tag">Manufacturing</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- EDUCATION -->
+  <div class="section">
+    <div class="section-title">Education</div>
+
+    <div class="entry" style="padding:16px 24px;">
+      <div class="edu">
+        <div class="edu-info">
+          <div class="edu-school">Korea University</div>
+          <div class="edu-detail">M.S. in Statistics · Domain Generalization, Domain Adaptation, OOD Detection</div>
+        </div>
+        <span class="entry-date">2021 – 2026</span>
+      </div>
+      <div class="edu">
+        <div class="edu-info">
+          <div class="edu-school">Hankuk University of Foreign Studies</div>
+          <div class="edu-detail">B.S. in Statistics · Double Major: Computer & Electronic Systems Engineering</div>
+        </div>
+        <span class="entry-date">2016 – 2021</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- PUBLICATIONS -->
+  <div class="section">
+    <div class="section-title">Publications</div>
+
+    <div class="pub">
+      <div class="pub-title">DANGR: Domain Adversarial Noise Generation for Robust Classification</div>
+      <div class="pub-year">2025</div>
+    </div>
+    <div class="pub">
+      <div class="pub-title">A Diffusion-Based Data Augmentation Approach for Test and Evaluation Data</div>
+      <div class="pub-year">2023</div>
+    </div>
+    <div class="pub">
+      <div class="pub-title">Statistical Determination of Test Repetitions for Improved Reliability by Evaluation Type</div>
+      <div class="pub-year">2022</div>
+    </div>
+  </div>
+
+  <!-- SKILLS -->
+  <div class="section">
+    <div class="section-title">Skills</div>
+
+    <div class="entry" style="padding:20px 24px;">
+      <div class="skills-grid">
+        <span class="skill-label">Languages</span>
+        <div class="skill-items">
+          <span class="tag">Python</span><span class="tag">SQL</span><span class="tag">R</span><span class="tag">Java</span><span class="tag">C/C++</span>
+        </div>
+        <span class="skill-label">ML / DL</span>
+        <div class="skill-items">
+          <span class="tag">PyTorch</span><span class="tag">TensorFlow</span><span class="tag">Scikit-learn</span><span class="tag">LightGBM</span><span class="tag">CatBoost</span><span class="tag">XGBoost</span><span class="tag">DomainBed</span>
+        </div>
+        <span class="skill-label">Areas</span>
+        <div class="skill-items">
+          <span class="tag">Statistics</span><span class="tag">Machine Learning</span><span class="tag">Deep Learning</span><span class="tag">RecSys</span><span class="tag">Domain Generalization</span><span class="tag">OOD Detection</span>
+        </div>
+        <span class="skill-label">Certs</span>
+        <div class="skill-items">
+          <span class="tag">ADsP (2022)</span><span class="tag">SQLD (2026)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">© 2026 Seungwon Chung</div>
+
+</div>
+</body>
+</html>
